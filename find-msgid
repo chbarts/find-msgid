@@ -1,0 +1,11 @@
+#!/usr/bin/zsh
+
+if [[ $# -ne 1 ]]; then
+    echo "usage: $0 MSGID"
+    echo "MSGID is a Usenet message ID with or without enclosing <angle brackets>"
+    exit 0
+fi
+
+id=$(echo "$@" | sed 's/^<\(.\+\)>$/\1/g')
+
+w3m -dump_extra https://groups.google.com/groups/search\?as_umsgid\="$id" | awk -F': ' '/W3m-current-url/ { print $2 }'
